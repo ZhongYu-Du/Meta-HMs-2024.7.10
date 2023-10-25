@@ -1032,21 +1032,7 @@ funnel(res_total_mda_overall,ylim=c(0,0.3), main = "(k) MDA")
 #9 * 3.5
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-###Ti index in Genus####
+###Ti index in Genus overall####
 data_Ti <- read_xlsx("data-all.xlsx", sheet = "Total_biomass")
 data_Ti$Var <- rep("Ti", 402)
 
@@ -1076,3 +1062,277 @@ Ti <- ggplot(data_Ti, aes(x = reorder(Genus, -Ti), y = Ti)) +
   annotate("text", x = 4 , y = 0.42,label = "Ti = 0.35",colour="black", size = 6)
 
 #ggsave("Ti-genus.pdf", Ti, width = 12, height = 7)
+
+
+###Ti index in Genus####
+data_Ti <- read_xlsx("data-all.xlsx", sheet = "Total_biomass")
+
+
+######Cd####
+table(data_Ti$HMs_type)
+
+data_Ti_Cd <- subset(data_Ti, HMs_type == "Cd")
+
+data_Ti_Cd$HM <- rep("Cd", 184)
+
+
+#绘图主题
+font = theme(axis.title.x=element_text(size=18, color = "black"),axis.text.x=element_text(size=16, color = "black"),
+             axis.title.y=element_text(size=18, color = "black"),axis.text.y=element_text(size=16, color = "black"))
+
+Ti_Cd <- ggplot(data_Ti_Cd, aes(x = reorder(Genus, -Ti), y = Ti)) +
+  geom_boxplot(outlier.size = 0.5, size = 0.5, fill = "gray80") +
+  #geom_text(data = stat, aes(label = sig), vjust = -0.5, size=5) +
+  stat_summary(fun="mean", geom="point", shape=20, size=2.5, color="red", fill="red",alpha=1)+
+  theme_bw()+
+  facet_wrap(~HM)+
+  theme(panel.grid = element_blank(), panel.background = element_rect(fill = 'transparent', color = 'black')) +
+  labs(x = 'Genus', y = 'Tolerance index', fill = '', color = '') +
+  scale_y_continuous(limits = c(0,2), breaks=seq(0,2, by=0.6))+
+  font+
+  theme(strip.text.x = element_text(size = 20, face = "bold"))+
+  theme(legend.position = "none")+
+  geom_hline(yintercept=1, linetype = 'dashed', col = 'blue', size = 0.8)+
+  geom_hline(yintercept=0.6, linetype = 'dashed', col = 'red', size = 0.8)+
+  geom_hline(yintercept=0.35, linetype = 'dashed', col = 'black', size = 0.8)+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5, face = "italic"))+
+  annotate("text", x = 30 , y = 1.07,label = "Ti = 1.0", colour="blue", size = 6)+
+  annotate("text", x = 4 , y = 0.67,label = "Ti = 0.60", colour="red", size = 6)+
+  annotate("text", x = 4 , y = 0.42,label = "Ti = 0.35",colour="black", size = 6)
+Ti_Cd
+#ggsave("Ti-genus.pdf", Ti, width = 12, height = 7)
+
+
+######Pb####
+table(data_Ti$HMs_type)
+
+data_Ti_Pb <- subset(data_Ti, HMs_type == "Pb")
+
+data_Ti_Pb$HM <- rep("Pb", 123)
+
+
+#绘图主题
+font = theme(axis.title.x=element_text(size=18, color = "black"),axis.text.x=element_text(size=16, color = "black"),
+             axis.title.y=element_text(size=18, color = "black"),axis.text.y=element_text(size=16, color = "black"))
+
+Ti_Pb <- ggplot(data_Ti_Pb, aes(x = reorder(Genus, -Ti), y = Ti)) +
+  geom_boxplot(outlier.size = 0.5, size = 0.5, fill = "gray80") +
+  #geom_text(data = stat, aes(label = sig), vjust = -0.5, size=5) +
+  stat_summary(fun="mean", geom="point", shape=20, size=2.5, color="red", fill="red",alpha=1)+
+  theme_bw()+
+  facet_wrap(~HM)+
+  theme(panel.grid = element_blank(), panel.background = element_rect(fill = 'transparent', color = 'black')) +
+  labs(x = 'Genus', y = 'Tolerance index', fill = '', color = '') +
+  scale_y_continuous(limits = c(0,2), breaks=seq(0,2, by=0.6))+
+  font+
+  theme(strip.text.x = element_text(size = 20, face = "bold"))+
+  theme(legend.position = "none")+
+  geom_hline(yintercept=1, linetype = 'dashed', col = 'blue', size = 0.8)+
+  geom_hline(yintercept=0.6, linetype = 'dashed', col = 'red', size = 0.8)+
+  geom_hline(yintercept=0.35, linetype = 'dashed', col = 'black', size = 0.8)+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5, face = "italic"))+
+  annotate("text", x = 25 , y = 1.07,label = "Ti = 1.0", colour="blue", size = 6)+
+  annotate("text", x = 4 , y = 0.67,label = "Ti = 0.60", colour="red", size = 6)+
+  annotate("text", x = 4 , y = 0.42,label = "Ti = 0.35",colour="black", size = 6)
+Ti_Pb
+#ggsave("Ti-genus.pdf", Ti, width = 12, height = 7)
+
+
+######Cu####
+table(data_Ti$HMs_type)
+
+data_Ti_Cu <- subset(data_Ti, HMs_type == "Cu")
+
+data_Ti_Cu$HM <- rep("Cu", 53)
+
+
+#绘图主题
+font = theme(axis.title.x=element_text(size=18, color = "black"),axis.text.x=element_text(size=16, color = "black"),
+             axis.title.y=element_text(size=18, color = "black"),axis.text.y=element_text(size=16, color = "black"))
+
+Ti_Cu <- ggplot(data_Ti_Cu, aes(x = reorder(Genus, -Ti), y = Ti)) +
+  geom_boxplot(outlier.size = 0.5, size = 0.5, fill = "gray80") +
+  #geom_text(data = stat, aes(label = sig), vjust = -0.5, size=5) +
+  stat_summary(fun="mean", geom="point", shape=20, size=2.5, color="red", fill="red",alpha=1)+
+  theme_bw()+
+  facet_wrap(~HM)+
+  theme(panel.grid = element_blank(), panel.background = element_rect(fill = 'transparent', color = 'black')) +
+  labs(x = 'Genus', y = 'Tolerance index', fill = '', color = '') +
+  scale_y_continuous(limits = c(0,1.5), breaks=seq(0,1.5, by=0.6))+
+  font+
+  theme(strip.text.x = element_text(size = 20, face = "bold"))+
+  theme(legend.position = "none")+
+  geom_hline(yintercept=1, linetype = 'dashed', col = 'blue', size = 0.8)+
+  geom_hline(yintercept=0.6, linetype = 'dashed', col = 'red', size = 0.8)+
+  geom_hline(yintercept=0.35, linetype = 'dashed', col = 'black', size = 0.8)+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5, face = "italic"))+
+  annotate("text", x = 1 , y = 1.07,label = "Ti = 1.0", colour="blue", size = 6)+
+  annotate("text", x = 1 , y = 0.67,label = "Ti = 0.60", colour="red", size = 6)+
+  annotate("text", x = 1 , y = 0.42,label = "Ti = 0.35",colour="black", size = 6)
+Ti_Cu
+#ggsave("Ti-genus.pdf", Ti, width = 12, height = 7)
+
+
+
+######Zn####
+table(data_Ti$HMs_type)
+
+data_Ti_Zn <- subset(data_Ti, HMs_type == "Zn")
+
+data_Ti_Zn$HM <- rep("Zn", 26)
+
+
+#绘图主题
+font = theme(axis.title.x=element_text(size=18, color = "black"),axis.text.x=element_text(size=16, color = "black"),
+             axis.title.y=element_text(size=18, color = "black"),axis.text.y=element_text(size=16, color = "black"))
+
+Ti_Zn <- ggplot(data_Ti_Zn, aes(x = reorder(Genus, -Ti), y = Ti)) +
+  geom_boxplot(outlier.size = 0.5, size = 0.5, fill = "gray80") +
+  #geom_text(data = stat, aes(label = sig), vjust = -0.5, size=5) +
+  stat_summary(fun="mean", geom="point", shape=20, size=2.5, color="red", fill="red",alpha=1)+
+  theme_bw()+
+  facet_wrap(~HM)+
+  theme(panel.grid = element_blank(), panel.background = element_rect(fill = 'transparent', color = 'black')) +
+  labs(x = 'Genus', y = 'Tolerance index', fill = '', color = '') +
+  scale_y_continuous(limits = c(0,1.8), breaks=seq(0,1.8, by=0.6))+
+  font+
+  theme(strip.text.x = element_text(size = 20, face = "bold"))+
+  theme(legend.position = "none")+
+  geom_hline(yintercept=1, linetype = 'dashed', col = 'blue', size = 0.8)+
+  geom_hline(yintercept=0.6, linetype = 'dashed', col = 'red', size = 0.8)+
+  geom_hline(yintercept=0.35, linetype = 'dashed', col = 'black', size = 0.8)+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5, face = "italic"))+
+  annotate("text", x = 1 , y = 1.07,label = "Ti = 1.0", colour="blue", size = 6)+
+  annotate("text", x = 1 , y = 0.67,label = "Ti = 0.60", colour="red", size = 6)+
+  annotate("text", x = 1 , y = 0.42,label = "Ti = 0.35",colour="black", size = 6)
+Ti_Zn
+#ggsave("Ti-genus.pdf", Ti, width = 12, height = 7)
+
+
+######Sb####
+table(data_Ti$HMs_type)
+
+data_Ti_Sb <- subset(data_Ti, HMs_type == "Sb")
+
+data_Ti_Sb$HM <- rep("Sb", 16)
+
+
+#绘图主题
+font = theme(axis.title.x=element_text(size=18, color = "black"),axis.text.x=element_text(size=16, color = "black"),
+             axis.title.y=element_text(size=18, color = "black"),axis.text.y=element_text(size=16, color = "black"))
+
+Ti_Sb <- ggplot(data_Ti_Sb, aes(x = reorder(Genus, -Ti), y = Ti)) +
+  geom_boxplot(outlier.size = 0.5, size = 0.5, fill = "gray80") +
+  #geom_text(data = stat, aes(label = sig), vjust = -0.5, size=5) +
+  stat_summary(fun="mean", geom="point", shape=20, size=2.5, color="red", fill="red",alpha=1)+
+  theme_bw()+
+  facet_wrap(~HM)+
+  theme(panel.grid = element_blank(), panel.background = element_rect(fill = 'transparent', color = 'black')) +
+  labs(x = 'Genus', y = 'Tolerance index', fill = '', color = '') +
+  scale_y_continuous(limits = c(0,1.5), breaks=seq(0,1.5, by=0.6))+
+  font+
+  theme(strip.text.x = element_text(size = 20, face = "bold"))+
+  theme(legend.position = "none")+
+  geom_hline(yintercept=1, linetype = 'dashed', col = 'blue', size = 0.8)+
+  geom_hline(yintercept=0.6, linetype = 'dashed', col = 'red', size = 0.8)+
+  geom_hline(yintercept=0.35, linetype = 'dashed', col = 'black', size = 0.8)+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5, face = "italic"))+
+  annotate("text", x = 1 , y = 1.07,label = "Ti = 1.0", colour="blue", size = 6)+
+  annotate("text", x = 1 , y = 0.67,label = "Ti = 0.60", colour="red", size = 6)+
+  annotate("text", x = 1 , y = 0.42,label = "Ti = 0.35",colour="black", size = 6)
+Ti_Sb
+#ggsave("Ti-genus.pdf", Ti, width = 12, height = 7)
+
+
+
+###获取环境因素和气象因素###
+#读取总生物量数据（Ti计算的）
+data_site <- readxl::read_xlsx("data-all.xlsx", sheet = "Total_biomass")
+setwd("E:\\博士研究生\\Meta分析论文\\B重金属与木本植物meta")
+###R语言从SoilGrid获取数据
+library(geodata)
+library(raster)
+library(sp)
+library(terra)
+
+#"bdod", "cfvo", "clay", "nitrogen", "ocd", 
+#"ocs", "phh2o", "sand", "silt", "soc", "wrb". See Details
+
+
+
+#####pH(H2O)#####
+gph <- soil_world("phh2o",depth=30, path=tempdir())
+
+#Plot
+plot(gph, ylim = c(-60,90), xlim = c(-180,180),
+     col = colorRampPalette(c("#3288BD","#66C2A5","#FEE08B","#D53E4F"))(250))
+
+# create RasterLayer
+ph <- raster(gph)
+plot(ph)
+
+#points
+data_ph <- openxlsx::read.xlsx("data-all.xlsx", sheet = "Global_map")
+coordinates(data_ph) = c("longitude", "latitude")
+dat_ph <- extract(x = ph, y = data_ph)
+data_point_ph <-data.frame(data_ph, dat_ph)
+write.csv(data_point_ph,"SoilGrid_ph_data.csv")
+
+
+#####Soil BD#####
+gbd <- soil_world("bdod",depth=30, path=tempdir())
+
+#Plot
+plot(gbd, ylim = c(-60,90), xlim = c(-180,180),
+     col = colorRampPalette(c("#3288BD","#66C2A5","#FEE08B","#D53E4F"))(250))
+
+# create RasterLayer
+bd <- raster(gbd)
+plot(bd)
+
+#points
+data_bd <- openxlsx::read.xlsx("data-all.xlsx", sheet = "Global_map")
+coordinates(data_bd) = c("longitude", "latitude")
+dat_bd <- extract(x = bd, y = data_bd)
+data_point_bd <-data.frame(data_bd, dat_bd)
+write.csv(data_point_bd,"SoilGrid_BD_data.csv")
+
+
+
+#####Soil SOC#####
+gsoc <- soil_world("soc",depth=30, path=tempdir())
+
+#Plot
+plot(gsoc, ylim = c(-60,90), xlim = c(-180,180),
+     col = colorRampPalette(c("#3288BD","#66C2A5","#FEE08B","#D53E4F"))(250))
+
+# create RasterLayer
+soc <- raster(gsoc)
+plot(soc)
+
+#points
+data_soc <- openxlsx::read.xlsx("data-all.xlsx", sheet = "Global_map")
+coordinates(data_soc) = c("longitude", "latitude")
+dat_soc <- extract(x = soc, y = data_soc)
+data_point_soc <-data.frame(data_soc, dat_soc)
+write.csv(data_point_soc,"SoilGrid_SOC_data.csv")
+
+
+
+#####Soil TN#####
+gtn <- soil_world("nitrogen",depth=30, path=tempdir())
+
+#Plot
+plot(gtn, ylim = c(-60,90), xlim = c(-180,180),
+     col = colorRampPalette(c("#3288BD","#66C2A5","#FEE08B","#D53E4F"))(250))
+
+# create RasterLayer
+tn <- raster(gtn)
+plot(tn)
+
+#points
+data_tn <- openxlsx::read.xlsx("data-all.xlsx", sheet = "Global_map")
+coordinates(data_tn) = c("longitude", "latitude")
+dat_tn <- extract(x = tn, y = data_tn)
+data_point_tn <-data.frame(data_tn, dat_tn)
+write.csv(data_point_tn,"SoilGrid_TN_data.csv")
