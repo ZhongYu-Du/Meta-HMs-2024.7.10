@@ -1,9 +1,9 @@
 # Meta-HMs
-The code for plant responses to heavy metals
+## The code for plant responses to heavy metals
 
-Author: Zhongyu Du
+### Author: Zhongyu Du
 
-Time: 2023-10-25
+### Time: 2023-10-25
 
 # Code
 ```
