@@ -301,23 +301,7 @@ ggsave("Published_year.pdf", width = 10, height = 5)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 setwd("E:\\博士研究生\\Meta分析论文\\B重金属与木本植物meta")
-
-
 ######Biomass#####
 #1 Total biomass####
 rm(list = ls())
