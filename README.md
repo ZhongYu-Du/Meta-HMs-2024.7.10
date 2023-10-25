@@ -6,6 +6,17 @@
 ### Time: 2023-10-25
 
 # Code for meta-analysis
+
+### Read me
+TB, Total biomass
+
+AB, Aboveground biomass
+
+LB, Leaf biomass
+
+RB, Root biomass
+
+
 ```
 ###A global meta-analysis of ability on remediation of 
 ###heavy metal contaminated soil by woody plants
