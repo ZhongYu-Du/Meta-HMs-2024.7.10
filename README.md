@@ -753,7 +753,7 @@ ggsave("HMs_concentration_v2.pdf",HMs_er, width = 12, height = 12,dpi = 600)
 
 ![image](https://github.com/Byonone/Meta-HMs/blob/main/HMs_concentration_v2.png)
 
-####Fiting
+#### Fiting
 ```
 ####model fit assessment
 par(mfrow = c(2,3))
