@@ -5,7 +5,7 @@
 
 ### Time: 2023-10-25
 
-# Code
+# Code for meta-analysis
 ```
 ###A global meta-analysis of ability on remediation of 
 ###heavy metal contaminated soil by woody plants
@@ -442,7 +442,7 @@ ggsave("biomass_v2.pdf",biomass_er, width = 14, height = 6,dpi = 600)
 ![image](https://github.com/Byonone/Meta-HMs/blob/main/biomass_v2.png)
 
 
-#### Fiting
+#### Fiting in biomass
 ```
 ####model fit assessment
 par(mfrow = c(1,3))
@@ -753,7 +753,7 @@ ggsave("HMs_concentration_v2.pdf",HMs_er, width = 12, height = 12,dpi = 600)
 
 ![image](https://github.com/Byonone/Meta-HMs/blob/main/HMs_concentration_v2.png)
 
-#### Fiting
+#### Fiting in HMs concentration
 ```
 ####model fit assessment
 par(mfrow = c(2,3))
@@ -1062,7 +1062,9 @@ ggsave("Enzyme_v2.pdf", Meihuo_er, width = 9, height = 10,dpi = 600)
 ```
 
 ![image](https://github.com/Byonone/Meta-HMs/blob/main/Enzyme_v2.png)
-#### Fitting
+
+
+#### Fitting in enzyme
 
 ```
 ####model fit assessment
@@ -1100,7 +1102,6 @@ funnel(res_total_mda_overall,ylim=c(0,0.3), main = "(k) MDA")
 #9 * 3.5
 ```
 
-![image](https://github.com/Byonone/Meta-HMs/blob/main/Funnel.png)
 
 #### Ti
 ```
@@ -1138,7 +1139,7 @@ Ti <- ggplot(data_Ti, aes(x = reorder(Genus, -Ti), y = Ti)) +
 ![image](https://github.com/Byonone/Meta-HMs/blob/main/Ti-genus.png)
 
 
-#### Environmental factors
+#### Environmental variables (pH/BD/SOC/TN)
 ```
 ###获取环境因素和气象因素###
 
