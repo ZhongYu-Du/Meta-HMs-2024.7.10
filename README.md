@@ -1060,6 +1060,8 @@ Fig_3_d
 Meihuo_er <- cowplot::plot_grid(Fig_3_a,Fig_3_b,Fig_3_c, Fig_3_d, ncol = 2,align = "hv", labels = c("(a)","(b)","(c)", "(d)"), label_size = 24)
 ggsave("Enzyme_v2.pdf", Meihuo_er, width = 9, height = 10,dpi = 600)
 ```
+
+![image](https://github.com/Byonone/Meta-HMs/blob/main/Enzyme_v2.png)
 #### Fitting
 
 ```
@@ -1098,6 +1100,8 @@ funnel(res_total_mda_overall,ylim=c(0,0.3), main = "(k) MDA")
 #9 * 3.5
 ```
 
+![image](https://github.com/Byonone/Meta-HMs/blob/main/Funnel.png)
+
 #### Ti
 ```
 ###Ti index in Genus####
@@ -1131,6 +1135,8 @@ Ti <- ggplot(data_Ti, aes(x = reorder(Genus, -Ti), y = Ti)) +
 
 #ggsave("Ti-genus.pdf", Ti, width = 12, height = 7)
 ```
+![image](https://github.com/Byonone/Meta-HMs/blob/main/Ti-genus.png)
+
 
 #### Environmental factors
 ```
