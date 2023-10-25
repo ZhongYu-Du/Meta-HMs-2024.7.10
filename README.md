@@ -6,7 +6,7 @@ Author: Zhongyu Du
 Time: 2023-10-25
 
 # Code
-'
+```
 install.packages("geodata")
 library(geodata)
 library(raster)
@@ -30,7 +30,7 @@ coordinates(data) = c("longitude", "latitude")
 phd <- extract(x = ph, y = data)
 datapoint <-data.frame (data,phd)
 write.csv(datapoint,"E:/Seoyeol/Paper/4ENG2/Data/ph.csv")#生成csv文件
-'
+```
 
 
 # Figure 1
