@@ -440,3 +440,33 @@ ggsave("biomass_v2.pdf",biomass_er, width = 14, height = 6,dpi = 600)
 
 ```
 ![image](https://github.com/Byonone/Meta-HMs/blob/main/biomass_v2.png)
+
+
+#### Fiting
+```
+####model fit assessment
+par(mfrow = c(1,3))
+#Total biomass
+##Rosenthal's Fail-safe N Calculation: N > 5k+10
+fsn(es_total_biomass$yi, es_total_biomass$vi, data = es_total_biomass, type = "Rosenthal")
+
+#funnel plot
+funnel(res_total_overall,ylim=c(0,0.8), main = "(a) Total biomass")
+
+#Aboveground biomass
+##Rosenthal's Fail-safe N Calculation: N > 5k+10
+fsn(es_above_biomass$yi, es_above_biomass$vi, data = es_above_biomass, type = "Rosenthal")
+
+#funnel plot
+funnel(res_above_overall,ylim=c(0,0.8), main = "(b) Aboveground biomass")
+
+#Underground biomass
+##Rosenthal's Fail-safe N Calculation: N > 5k+10
+#fsn(es_root_biomass$yi, es_root_biomass$vi, data = es_root_biomass, type = "Rosenthal")
+
+#funnel plot
+funnel(res_root_overall,ylim=c(0,1), main = "(c) Underground biomass")
+
+#9 * 3.5
+```
+![image](https://github.com/Byonone/Meta-HMs/blob/main/funnel-biomass.jpg)
