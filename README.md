@@ -469,7 +469,7 @@ funnel(res_root_overall,ylim=c(0,1), main = "(c) Underground biomass")
 
 #9 * 3.5
 ```
-![image](https://github.com/Byonone/Meta-HMs/blob/main/funnel-biomass.jpg)
+
 
 #### HMs concentration
 ```
@@ -1101,7 +1101,7 @@ funnel(res_total_mda_overall,ylim=c(0,0.3), main = "(k) MDA")
 
 #9 * 3.5
 ```
-
+![image](https://github.com/Byonone/Meta-HMs/blob/main/Funnel.png)
 
 #### Ti
 ```
