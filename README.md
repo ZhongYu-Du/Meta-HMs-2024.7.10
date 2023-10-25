@@ -470,3 +470,284 @@ funnel(res_root_overall,ylim=c(0,1), main = "(c) Underground biomass")
 #9 * 3.5
 ```
 ![image](https://github.com/Byonone/Meta-HMs/blob/main/funnel-biomass.jpg)
+
+#### HMs concentration
+```
+########HMs concentration#######
+#1 Total HMs concentration####
+rm(list = ls())
+d_t_hms <- read_xlsx("data-all.xlsx", sheet = "Total_HMs_concentration")
+
+table(d_t_hms$HMs_type)
+
+
+#effect size
+es_hms_total <- escalc(measure = "ROM", 
+                       m1i = Xt,
+                       sd1i = SDt,
+                       n1i = Nt,
+                       m2i = Xc,
+                       sd2i = SDc,
+                       n2i = Nc,
+                       data = d_t_hms)
+
+#一步到位版
+#HMs_type
+res_total_hms_overall <- rma.mv(yi, vi, data = es_hms_total, random = ~1|Study_ID/Co_ID, method = "REML",digits = 4)
+res_total_hms_HMs <- rma.mv(yi, vi, data = es_hms_total, mod = ~HMs_type-1, random = list(~1|Study_ID/Co_ID), method = "REML",digits = 4)
+
+#提取结果
+res_total_hms_overall_reml <- mod_results(res_total_hms_overall, mod = "1", group = "Study_ID") 
+res_total_hms_HMs_reml <- mod_results(res_total_hms_HMs, mod = "HMs_type", group = "Study_ID")
+#汇总数据
+fig_data_total_hms_HMs <-rbind(res_total_hms_overall_reml$mod_table,
+                               res_total_hms_HMs_reml$mod_table)
+
+table(d_t_hms$HMs_type)
+fig_data_total_hms_HMs$HMs <- c("Overall (35)",
+                                "Cd (15)",
+                                "Cu (5)",
+                                "Pb (15)")
+
+fig_data_total_hms_HMs$col <- ifelse((exp(fig_data_total_hms_HMs$lowerCL)-1)*100<=0,"No","Yes")
+fig_data_total_hms_HMs$Index <- c(rep("Total HMs concentration",4))
+
+fig_data_total_hms_HMs$HMs <- factor(fig_data_total_hms_HMs$HMs, levels = c("Cu (5)","Pb (15)", "Cd (15)", "Overall (35)"))
+#绘图主题
+font = theme(axis.title.x=element_text(size=18, color = "black"),axis.text.x=element_text(size=16, color = "black"),
+             axis.title.y=element_text(size=18, color = "black"),axis.text.y=element_text(size=16, color = "black"))
+
+#作图
+Fig_2_a <-
+  ggplot(data=fig_data_total_hms_HMs, aes(x=HMs, y=(exp(estimate)-1)*100, ymin=(exp(lowerCL)-1)*100, ymax=(exp(upperCL)-1)*100))+  
+  geom_pointrange(aes(col=col),shape=20, size=2, position=position_dodge(width=c(0.1)))+
+  coord_flip() +
+  theme_bw()+
+  labs(x='Heavy metals', y='Percentage change (%)')+
+  facet_grid(.~Index,switch = "y")+
+  geom_hline(yintercept=0, linetype = 'dashed', col = 'black')+
+  scale_y_continuous(limits = c(-10000,160000), breaks=seq(-10000,160000, by=50000))+
+  scale_colour_manual(values = c("gray60", "red"))+
+  theme(legend.position = "none")+
+  font+
+  theme(strip.text.x = element_text(size = 20))+
+  theme(panel.grid = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = 'black'))+
+  geom_vline(xintercept = 3.5, linetype = 'dashed', col = 'gray70')
+
+Fig_2_a
+
+#2 Aboveground HMs concentration####
+d_ab_hms <- read_xlsx("data-all.xlsx", sheet = "Aboveground_HMs_concentration")
+
+table(d_ab_hms$HMs_type)
+
+
+#effect size
+es_hms_above <- escalc(measure = "ROM", 
+                       m1i = Xt,
+                       sd1i = SDt,
+                       n1i = Nt,
+                       m2i = Xc,
+                       sd2i = SDc,
+                       n2i = Nc,
+                       data = d_ab_hms)
+
+
+#一步到位版
+#HMs_type
+res_above_hms_overall <- rma.mv(yi, vi, data = es_hms_above, random = ~1|Study_ID/Co_ID, method = "REML",digits = 4)
+res_above_hms_HMs <- rma.mv(yi, vi, data = es_hms_above, mod = ~HMs_type-1, random = list(~1|Study_ID/Co_ID), method = "REML",digits = 4)
+
+#提取结果
+res_above_hms_overall_reml <- mod_results(res_above_hms_overall, mod = "1", group = "Study_ID") 
+res_above_hms_HMs_reml <- mod_results(res_above_hms_HMs, mod = "HMs_type", group = "Study_ID")
+#汇总数据
+fig_data_above_hms_HMs <-rbind(res_above_hms_overall_reml$mod_table,
+                               res_above_hms_HMs_reml$mod_table)
+
+table(d_ab_hms$HMs_type)
+fig_data_above_hms_HMs$HMs <- c("Overall (134)",
+                                "As (3)",
+                                "Cd (70)",
+                                "Cu (14)",
+                                "Pb (31)",
+                                "Zn (16)")
+
+fig_data_above_hms_HMs$col <- ifelse((exp(fig_data_above_hms_HMs$lowerCL)-1)*100<=0,"No","Yes")
+fig_data_above_hms_HMs$Index <- c(rep("Above HMs concentration",6))
+
+fig_data_above_hms_HMs$HMs <- factor(fig_data_above_hms_HMs$HMs, levels = c("As (3)", "Cu (14)", "Zn (16)","Pb (31)", "Cd (70)", "Overall (134)"))
+#绘图主题
+font = theme(axis.title.x=element_text(size=18, color = "black"),axis.text.x=element_text(size=16, color = "black"),
+             axis.title.y=element_text(size=18, color = "black"),axis.text.y=element_text(size=16, color = "black"))
+
+#作图
+Fig_2_b <-
+  ggplot(data=fig_data_above_hms_HMs, aes(x=HMs, y=(exp(estimate)-1)*100, ymin=(exp(lowerCL)-1)*100, ymax=(exp(upperCL)-1)*100))+  
+  geom_pointrange(aes(col=col),shape=20, size=2, position=position_dodge(width=c(0.1)))+
+  coord_flip() +
+  theme_bw()+
+  labs(x='Heavy metals', y='Percentage change (%)')+
+  facet_grid(.~Index,switch = "y")+
+  geom_hline(yintercept=0, linetype = 'dashed', col = 'black')+
+  scale_y_continuous(limits = c(-10000,15000), breaks=seq(-10000,15000, by=10000))+
+  scale_colour_manual(values = c("gray60", "red"))+
+  theme(legend.position = "none")+
+  font+
+  theme(strip.text.x = element_text(size = 20))+
+  theme(panel.grid = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = 'black'))+
+  geom_vline(xintercept = 5.5, linetype = 'dashed', col = 'gray70')
+
+Fig_2_b
+
+
+#2 Leaf HMs concentration####
+d_leaf_hms <- read_xlsx("data-all.xlsx", sheet = "Leaf_HMs_concentration")
+
+table(d_leaf_hms$HMs_type)
+
+
+#effect size
+es_hms_leaf <- escalc(measure = "ROM", 
+                      m1i = Xt,
+                      sd1i = SDt,
+                      n1i = Nt,
+                      m2i = Xc,
+                      sd2i = SDc,
+                      n2i = Nc,
+                      data = d_leaf_hms)
+es_hms_leaf <- filter(es_hms_leaf, es_hms_leaf$yi!="NA")
+
+#一步到位版
+#HMs_type
+res_leaf_hms_overall <- rma.mv(yi, vi, data = es_hms_leaf, random = ~1|Study_ID/Co_ID, method = "REML",digits = 4)
+res_leaf_hms_HMs <- rma.mv(yi, vi, data = es_hms_leaf, mod = ~HMs_type-1, random = list(~1|Study_ID/Co_ID), method = "REML",digits = 4)
+
+#提取结果
+res_leaf_hms_overall_reml <- mod_results(res_leaf_hms_overall, mod = "1", group = "Study_ID") 
+res_leaf_hms_HMs_reml <- mod_results(res_leaf_hms_HMs, mod = "HMs_type", group = "Study_ID")
+#汇总数据
+fig_data_leaf_hms_HMs <-rbind(res_leaf_hms_overall_reml$mod_table,
+                              res_leaf_hms_HMs_reml$mod_table)
+
+table(d_leaf_hms$HMs_type)
+fig_data_leaf_hms_HMs$HMs <- c("Overall (597)",
+                               "As (24)",
+                               "Cd (293)",
+                               "Cr (6)",
+                               "Cu (93)",
+                               "Ni (6)",
+                               "Pb (145)",
+                               "Ti (6)",
+                               "Zn (85)")
+
+fig_data_leaf_hms_HMs$col <- ifelse((exp(fig_data_leaf_hms_HMs$lowerCL)-1)*100<=0,"No","Yes")
+fig_data_leaf_hms_HMs$Index <- c(rep("Leaf HMs concentration",9))
+
+fig_data_leaf_hms_HMs$HMs <- factor(fig_data_leaf_hms_HMs$HMs, levels = c("Ti (6)", "Cr (6)","Ni (6)","As (24)",
+                                                                          "Zn (85)", "Cu (93)","Pb (145)", "Cd (293)", "Overall (597)"))
+#绘图主题
+font = theme(axis.title.x=element_text(size=18, color = "black"),axis.text.x=element_text(size=16, color = "black"),
+             axis.title.y=element_text(size=18, color = "black"),axis.text.y=element_text(size=16, color = "black"))
+
+#作图
+Fig_2_c <-
+  ggplot(data=fig_data_leaf_hms_HMs, aes(x=HMs, y=(exp(estimate)-1)*100, ymin=(exp(lowerCL)-1)*100, ymax=(exp(upperCL)-1)*100))+  
+  geom_pointrange(aes(col=col),shape=20, size=2, position=position_dodge(width=c(0.1)))+
+  coord_flip() +
+  theme_bw()+
+  labs(x='Heavy metals', y='Percentage change (%)')+
+  facet_grid(.~Index,switch = "y")+
+  geom_hline(yintercept=0, linetype = 'dashed', col = 'black')+
+  scale_y_continuous(limits = c(-4000,7000), breaks=seq(-4000,7000, by=4000))+
+  scale_colour_manual(values = c("gray60", "red"))+
+  theme(legend.position = "none")+
+  font+
+  theme(strip.text.x = element_text(size = 20))+
+  theme(panel.grid = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = 'black'))+
+  geom_vline(xintercept = 8.5, linetype = 'dashed', col = 'gray70')
+
+Fig_2_c
+
+
+#2 Root HMs concentration####
+d_root_hms <- read_xlsx("data-all.xlsx", sheet = "Root_HMs_concentration")
+
+table(d_root_hms$HMs_type)
+
+
+#effect size
+es_hms_root <- escalc(measure = "ROM", 
+                      m1i = Xt,
+                      sd1i = SDt,
+                      n1i = Nt,
+                      m2i = Xc,
+                      sd2i = SDc,
+                      n2i = Nc,
+                      data = d_root_hms)
+es_hms_root <- filter(es_hms_root, es_hms_root$yi!="NA")
+
+#一步到位版
+#HMs_type
+res_root_hms_overall <- rma.mv(yi, vi, data = es_hms_root, random = ~1|Study_ID/Co_ID, method = "REML",digits = 4)
+res_root_hms_HMs <- rma.mv(yi, vi, data = es_hms_root, mod = ~HMs_type-1, random = list(~1|Study_ID/Co_ID), method = "REML",digits = 4)
+
+#提取结果
+res_root_hms_overall_reml <- mod_results(res_root_hms_overall, mod = "1", group = "Study_ID") 
+res_root_hms_HMs_reml <- mod_results(res_root_hms_HMs, mod = "HMs_type", group = "Study_ID")
+#汇总数据
+fig_data_root_hms_HMs <-rbind(res_root_hms_overall_reml$mod_table,
+                              res_root_hms_HMs_reml$mod_table)
+
+table(d_root_hms$HMs_type)
+fig_data_root_hms_HMs$HMs <- c("Overall (744)",
+                               "As (27)",
+                               "Cd (372)",
+                               "Cr (6)",
+                               "Cu (108)",
+                               "Ni (9)",
+                               "Pb (169)",
+                               "Sb (17)",
+                               "Zn (110)")
+
+fig_data_root_hms_HMs$col <- ifelse((exp(fig_data_root_hms_HMs$lowerCL)-1)*100<=0,"No","Yes")
+fig_data_root_hms_HMs$Index <- c(rep("Underground HMs concentration",9))
+
+fig_data_root_hms_HMs$HMs <- factor(fig_data_root_hms_HMs$HMs, levels = c("Cr (6)","Ni (9)", "Sb (17)","As (27)","Cu (108)",
+                                                                          "Zn (110)", "Pb (169)", "Cd (372)", "Overall (744)"))
+#绘图主题
+font = theme(axis.title.x=element_text(size=18, color = "black"),axis.text.x=element_text(size=16, color = "black"),
+             axis.title.y=element_text(size=18, color = "black"),axis.text.y=element_text(size=16, color = "black"))
+
+#作图
+Fig_2_d <-
+  ggplot(data=fig_data_root_hms_HMs, aes(x=HMs, y=(exp(estimate)-1)*100, ymin=(exp(lowerCL)-1)*100, ymax=(exp(upperCL)-1)*100))+  
+  geom_pointrange(aes(col=col),shape=20, size=2, position=position_dodge(width=c(0.1)))+
+  coord_flip() +
+  theme_bw()+
+  labs(x='Heavy metals', y='Percentage change (%)')+
+  facet_grid(.~Index,switch = "y")+
+  geom_hline(yintercept=0, linetype = 'dashed', col = 'black')+
+  scale_y_continuous(limits = c(-25000,49000), breaks=seq(-25000,49000, by=25000))+
+  scale_colour_manual(values = c("red", "gray60"))+
+  theme(legend.position = "none")+
+  font+
+  theme(strip.text.x = element_text(size = 20))+
+  theme(panel.grid = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = 'black'))+
+  geom_vline(xintercept = 8.5, linetype = 'dashed', col = 'gray70')
+
+Fig_2_d
+
+
+HMs_er <- cowplot::plot_grid(Fig_2_a,Fig_2_b,Fig_2_c, Fig_2_d, ncol = 2,align = "hv", labels = c("(a)","(b)","(c)", "(d)"), label_size = 24)
+ggsave("HMs_concentration_v2.pdf",HMs_er, width = 12, height = 12,dpi = 600)
+```
+
