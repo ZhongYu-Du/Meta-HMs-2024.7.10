@@ -1244,3 +1244,448 @@ dat_tn <- extract(x = tn, y = data_tn)
 data_point_tn <-data.frame(data_tn, dat_tn)
 write.csv(data_point_tn,"SoilGrid_TN_data.csv")
 ```
+
+
+### 回归分析
+```
+
+####Relationship between biomass, HMs concentration and enzyme
+library(dplyr)
+library(ggplot2)
+library(ggpmisc)
+data_re <- read_xlsx("data-all.xlsx", sheet = "all-relationship")
+str(data_re)
+
+#Biomass
+es_TB <- escalc(measure = "ROM",
+                m1i = TB_Xt,
+                sd1i = TB_SDt,
+                n1i = TB_Nt,
+                m2i = TB_Xc,
+                sd2i = TB_SDc,
+                n2i = TB_Nc,
+                data = data_re)
+
+es_TB <- rename(es_TB, TB = yi, TB_vi = vi)
+
+
+es_TAB <- escalc(measure = "ROM",
+                m1i = AB_Xt,
+                sd1i = AB_SDt,
+                n1i = AB_Nt,
+                m2i = AB_Xc,
+                sd2i = AB_SDc,
+                n2i = AB_Nc,
+                data = es_TB)
+
+es_TAB <- rename(es_TAB, AB = yi, AB_vi = vi)
+
+
+es_TALB <- escalc(measure = "ROM",
+                 m1i = LB_Xt,
+                 sd1i = LB_SDt,
+                 n1i = LB_Nt,
+                 m2i = LB_Xc,
+                 sd2i = LB_SDc,
+                 n2i = LB_Nc,
+                 data = es_TAB)
+
+es_TALB <- rename(es_TALB, LB = yi, LB_vi = vi)
+
+
+es_TALRB <- escalc(measure = "ROM",
+                  m1i = RB_Xt,
+                  sd1i = RB_SDt,
+                  n1i = RB_Nt,
+                  m2i = RB_Xc,
+                  sd2i = RB_SDc,
+                  n2i = RB_Nc,
+                  data = es_TALB)
+
+es_TALRB <- rename(es_TALRB, RB = yi, RB_vi = vi)
+
+es_TALRB
+
+
+#HMS
+es_THM <- escalc(measure = "ROM",
+                   m1i = THM_Xt,
+                   sd1i = THM_SDt,
+                   n1i = THM_Nt,
+                   m2i = THM_Xc,
+                   sd2i = THM_SDc,
+                   n2i = THM_Nc,
+                   data = es_TALRB)
+
+es_THM <- rename(es_THM, THM = yi, THM_vi = vi)
+
+
+es_TAHM <- escalc(measure = "ROM",
+                 m1i = AHM_Xt,
+                 sd1i = AHM_SDt,
+                 n1i = AHM_Nt,
+                 m2i = AHM_Xc,
+                 sd2i = AHM_SDc,
+                 n2i = AHM_Nc,
+                 data = es_THM)
+
+es_TAHM <- rename(es_TAHM, AHM = yi, AHM_vi = vi)
+
+
+es_TALHM <- escalc(measure = "ROM",
+                  m1i = LHM_Xt,
+                  sd1i = LHM_SDt,
+                  n1i = LHM_Nt,
+                  m2i = LHM_Xc,
+                  sd2i = LHM_SDc,
+                  n2i = LHM_Nc,
+                  data = es_TAHM)
+
+es_TALHM <- rename(es_TALHM, LHM = yi, LHM_vi = vi)
+
+
+es_TALRHM <- escalc(measure = "ROM",
+                   m1i = RHM_Xt,
+                   sd1i = RHM_SDt,
+                   n1i = RHM_Nt,
+                   m2i = RHM_Xc,
+                   sd2i = RHM_SDc,
+                   n2i = RHM_Nc,
+                   data = es_TALHM)
+
+es_TALRHM <- rename(es_TALRHM, RHM = yi, RHM_vi = vi)
+
+
+
+###emazy
+es_SOD <- escalc(measure = "ROM",
+                    m1i = SOD_Xt,
+                    sd1i = SOD_SDt,
+                    n1i = SOD_Nt,
+                    m2i = SOD_Xc,
+                    sd2i = SOD_SDc,
+                    n2i = SOD_Nc,
+                    data = es_TALRHM)
+
+es_SOD <- rename(es_SOD, SOD = yi, SOD_vi = vi)
+
+
+es_POD <- escalc(measure = "ROM",
+                 m1i = POD_Xt,
+                 sd1i = POD_SDt,
+                 n1i = POD_Nt,
+                 m2i = POD_Xc,
+                 sd2i = POD_SDc,
+                 n2i = POD_Nc,
+                 data = es_SOD)
+
+es_POD <- rename(es_POD, POD = yi, POD_vi = vi)
+
+
+
+es_CAT <- escalc(measure = "ROM",
+                 m1i = CAT_Xt,
+                 sd1i = CAT_SDt,
+                 n1i = CAT_Nt,
+                 m2i = CAT_Xc,
+                 sd2i = CAT_SDc,
+                 n2i = CAT_Nc,
+                 data = es_POD)
+
+es_CAT <- rename(es_CAT, CAT = yi, CAT_vi = vi)
+
+
+es_MDA <- escalc(measure = "ROM",
+                 m1i = MDA_Xt,
+                 sd1i = MDA_SDt,
+                 n1i = MDA_Nt,
+                 m2i = MDA_Xc,
+                 sd2i = MDA_SDc,
+                 n2i = MDA_Nc,
+                 data = es_CAT)
+
+es_MDA <- rename(es_MDA, MDA = yi, MDA_vi = vi)
+
+
+##整合数据，提取指定列
+str(es_MDA)
+colss <- c("Co_ID", "Experimental_method", "Plant_method", "Family", "Genus", "Functional_group","stress_time",
+           "Tree_age","pH","HMs_type",
+           "TB","AB","LB","RB","THM","AHM","LHM","RHM","SOD","POD","CAT","MDA")
+
+#final data
+data_rel <- es_MDA[, colnames(es_MDA) %in% colss]
+
+write.csv(data_rel, "data_rel_lnRR.csv")
+
+##Figure
+font = theme(axis.title.x=element_text(size=18, color = "black"),axis.text.x=element_text(size=16, color = "black"),
+             axis.title.y=element_text(size=18, color = "black"),axis.text.y=element_text(size=16, color = "black"))
+
+
+####Biomass and HMs
+
+leaf_biom_HMs<-
+  ggplot(data_rel, aes(LHM,LB))+
+  geom_hline(aes(yintercept=0), colour="black", linetype="dashed")+
+  geom_vline(aes(xintercept=0), colour="black", linetype="dashed")+
+  geom_point(size=2.5)+
+  geom_smooth(method = "gam",formula = y ~ x + I(x ^ 2), se = T)+
+  facet_wrap(.~HMs_type, scales = "free", ncol = 4, nrow = 4)+
+  theme_bw()+
+  theme(axis.text=element_text(colour='black',size=14),
+        legend.background = element_blank(),
+        legend.key = element_blank(),
+        legend.title = element_blank())+
+  
+  stat_poly_eq(data=data_rel,
+               aes(LHM,LB, label=paste(..p.value.label..,sep = "~~~~")),
+               formula = y~x, parse=T, size = 5,
+               label.y = "bottom", label.x = "right")+
+  font +
+  theme(strip.text.x = element_text(size = 18))+
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank())+
+  labs(x = "lnRR(Leaf HMs concentration)", y = "lnRR(Leaf biomass)")
+
+ggsave("Leaf-bio-con.pdf", leaf_biom_HMs, width = 10, height = 8)
+
+
+####HMs and enzyme
+
+leaf_HMs_sod<-
+  ggplot(data_rel, aes(LHM, SOD))+
+  geom_hline(aes(yintercept=0), colour="black", linetype="dashed")+
+  geom_vline(aes(xintercept=0), colour="black", linetype="dashed")+
+  geom_point(size=2.5)+
+  geom_smooth(method = "gam",formula = y ~ x + I(x ^ 2), se = T)+
+  facet_wrap(.~HMs_type, scales = "free", ncol = 4, nrow = 4)+
+  theme_bw()+
+  theme(axis.text=element_text(colour='black',size=14),
+        legend.background = element_blank(),
+        legend.key = element_blank(),
+        legend.title = element_blank())+
+  
+  stat_poly_eq(data=data_rel,
+               aes(LHM, SOD, label=paste(..p.value.label..,sep = "~~~~")),
+               formula = y~x, parse=T, size = 5,
+               label.y = "bottom", label.x = "right")+
+  font +
+  theme(strip.text.x = element_text(size = 18))+
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank())+
+  labs(x = "lnRR(Leaf HMs concentration)", y = "lnRR(SOD)")
+
+ggsave("leaf_HMs_sod.pdf", leaf_HMs_sod, width = 10, height = 8)
+
+
+
+leaf_HMs_pod<-
+  ggplot(data_rel, aes(LHM, POD))+
+  geom_hline(aes(yintercept=0), colour="black", linetype="dashed")+
+  geom_vline(aes(xintercept=0), colour="black", linetype="dashed")+
+  geom_point(size=2.5)+
+  geom_smooth(method = "gam",formula = y ~ x + I(x ^ 2), se = T)+
+  facet_wrap(.~HMs_type, scales = "free", ncol = 4, nrow = 4)+
+  theme_bw()+
+  theme(axis.text=element_text(colour='black',size=14),
+        legend.background = element_blank(),
+        legend.key = element_blank(),
+        legend.title = element_blank())+
+  
+  stat_poly_eq(data=data_rel,
+               aes(LHM, POD, label=paste(..p.value.label..,sep = "~~~~")),
+               formula = y~x, parse=T, size = 5,
+               label.y = "bottom", label.x = "right")+
+  font +
+  theme(strip.text.x = element_text(size = 18))+
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank())+
+  labs(x = "lnRR(Leaf HMs concentration)", y = "lnRR(POD)")
+
+ggsave("leaf_HMs_pod.pdf", leaf_HMs_pod, width = 10, height = 8)
+
+
+
+leaf_HMs_cat<-
+  ggplot(data_rel, aes(LHM, CAT))+
+  geom_hline(aes(yintercept=0), colour="black", linetype="dashed")+
+  geom_vline(aes(xintercept=0), colour="black", linetype="dashed")+
+  geom_point(size=2.5)+
+  geom_smooth(method = "gam",formula = y ~ x + I(x ^ 2), se = T)+
+  facet_wrap(.~HMs_type, scales = "free", ncol = 4, nrow = 4)+
+  theme_bw()+
+  theme(axis.text=element_text(colour='black',size=14),
+        legend.background = element_blank(),
+        legend.key = element_blank(),
+        legend.title = element_blank())+
+  
+  stat_poly_eq(data=data_rel,
+               aes(LHM, CAT, label=paste(..p.value.label..,sep = "~~~~")),
+               formula = y~x, parse=T, size = 5,
+               label.y = "bottom", label.x = "right")+
+  font +
+  theme(strip.text.x = element_text(size = 18))+
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank())+
+  labs(x = "lnRR(Leaf HMs concentration)", y = "lnRR(CAT)")
+
+ggsave("leaf_HMs_cat.pdf", leaf_HMs_cat, width = 10, height = 8)
+
+
+leaf_HMs_mda<-
+  ggplot(data_rel, aes(LHM, MDA))+
+  geom_hline(aes(yintercept=0), colour="black", linetype="dashed")+
+  geom_vline(aes(xintercept=0), colour="black", linetype="dashed")+
+  geom_point(size=2.5)+
+  geom_smooth(method = "gam",formula = y ~ x + I(x ^ 2), se = T)+
+  facet_wrap(.~HMs_type, scales = "free", ncol = 4, nrow = 4)+
+  theme_bw()+
+  theme(axis.text=element_text(colour='black',size=14),
+        legend.background = element_blank(),
+        legend.key = element_blank(),
+        legend.title = element_blank())+
+  
+  stat_poly_eq(data=data_rel,
+               aes(LHM, MDA, label=paste(..p.value.label..,sep = "~~~~")),
+               formula = y~x, parse=T, size = 5,
+               label.y = "bottom", label.x = "right")+
+  font +
+  theme(strip.text.x = element_text(size = 18))+
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank())+
+  labs(x = "lnRR(Leaf HMs concentration)", y = "lnRR(MDA)")
+
+ggsave("leaf_HMs_mda.pdf", leaf_HMs_mda, width = 10, height = 8)
+
+
+
+####Biomass and enzyme
+
+leaf_biom_sod<-
+  ggplot(data_rel, aes(LB, SOD))+
+  geom_hline(aes(yintercept=0), colour="black", linetype="dashed")+
+  geom_vline(aes(xintercept=0), colour="black", linetype="dashed")+
+  geom_point(size=2.5)+
+  geom_smooth(method = "gam",formula = y ~ x + I(x ^ 2), se = T)+
+  facet_wrap(.~HMs_type, scales = "free", ncol = 4, nrow = 4)+
+  theme_bw()+
+  theme(axis.text=element_text(colour='black',size=14),
+        legend.background = element_blank(),
+        legend.key = element_blank(),
+        legend.title = element_blank())+
+  
+  stat_poly_eq(data=data_rel,
+               aes(LB, SOD, label=paste(..p.value.label..,sep = "~~~~")),
+               formula = y~x, parse=T, size = 5,
+               label.y = "bottom", label.x = "right")+
+  font +
+  theme(strip.text.x = element_text(size = 18))+
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank())+
+  labs(x = "lnRR(Leaf biomass)", y = "lnRR(SOD)")
+
+ggsave("leaf_biom_sod.pdf", leaf_biom_sod, width = 10, height = 8)
+
+
+
+leaf_biom_pod<-
+  ggplot(data_rel, aes(LB, POD))+
+  geom_hline(aes(yintercept=0), colour="black", linetype="dashed")+
+  geom_vline(aes(xintercept=0), colour="black", linetype="dashed")+
+  geom_point(size=2.5)+
+  geom_smooth(method = "gam",formula = y ~ x + I(x ^ 2), se = T)+
+  facet_wrap(.~HMs_type, scales = "free", ncol = 4, nrow = 4)+
+  theme_bw()+
+  theme(axis.text=element_text(colour='black',size=14),
+        legend.background = element_blank(),
+        legend.key = element_blank(),
+        legend.title = element_blank())+
+  
+  stat_poly_eq(data=data_rel,
+               aes(LHM, POD, label=paste(..p.value.label..,sep = "~~~~")),
+               formula = y~x, parse=T, size = 5,
+               label.y = "bottom", label.x = "right")+
+  font +
+  theme(strip.text.x = element_text(size = 18))+
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank())+
+  labs(x = "lnRR(Leaf biomass)", y = "lnRR(POD)")
+
+ggsave("leaf_biom_pod.pdf", leaf_biom_pod, width = 10, height = 8)
+
+
+
+leaf_biom_cat<-
+  ggplot(data_rel, aes(LB, CAT))+
+  geom_hline(aes(yintercept=0), colour="black", linetype="dashed")+
+  geom_vline(aes(xintercept=0), colour="black", linetype="dashed")+
+  geom_point(size=2.5)+
+  geom_smooth(method = "gam",formula = y ~ x + I(x ^ 2), se = T)+
+  facet_wrap(.~HMs_type, scales = "free", ncol = 4, nrow = 4)+
+  theme_bw()+
+  theme(axis.text=element_text(colour='black',size=14),
+        legend.background = element_blank(),
+        legend.key = element_blank(),
+        legend.title = element_blank())+
+  
+  stat_poly_eq(data=data_rel,
+               aes(LHM, CAT, label=paste(..p.value.label..,sep = "~~~~")),
+               formula = y~x, parse=T, size = 5,
+               label.y = "bottom", label.x = "right")+
+  font +
+  theme(strip.text.x = element_text(size = 18))+
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank())+
+  labs(x = "lnRR(Leaf biomass)", y = "lnRR(CAT)")
+
+ggsave("leaf_biom_cat.pdf", leaf_biom_cat, width = 10, height = 8)
+
+
+leaf_biom_mda<-
+  ggplot(data_rel, aes(LB, MDA))+
+  geom_hline(aes(yintercept=0), colour="black", linetype="dashed")+
+  geom_vline(aes(xintercept=0), colour="black", linetype="dashed")+
+  geom_point(size=2.5)+
+  geom_smooth(method = "gam",formula = y ~ x + I(x ^ 2), se = T)+
+  facet_wrap(.~HMs_type, scales = "free", ncol = 4, nrow = 4)+
+  theme_bw()+
+  theme(axis.text=element_text(colour='black',size=14),
+        legend.background = element_blank(),
+        legend.key = element_blank(),
+        legend.title = element_blank())+
+  
+  stat_poly_eq(data=data_rel,
+               aes(LHM, MDA, label=paste(..p.value.label..,sep = "~~~~")),
+               formula = y~x, parse=T, size = 5,
+               label.y = "bottom", label.x = "right")+
+  font +
+  theme(strip.text.x = element_text(size = 18))+
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank())+
+  labs(x = "lnRR(Leaf biomass)", y = "lnRR(MDA)")
+
+ggsave("leaf_biom_mda.pdf", leaf_biom_mda, width = 10, height = 8)
+
+```
+![image](https://github.com/Byonone/Meta-HMs/blob/main/relationship.png)
+
+![image](https://github.com/Byonone/Meta-HMs/blob/main/relationship-biomass-mei.png)
