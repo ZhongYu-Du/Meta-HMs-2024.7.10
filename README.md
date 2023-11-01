@@ -1334,10 +1334,8 @@ ggsave("Ti_Sb.pdf", Ti_Sb, width = 4, height = 7)
 
 #### Environmental variables (pH/BD/SOC/TN)
 ```
-###获取环境因素和气象因素###
-
-data_site <- readxl::read_xlsx("data-all.xlsx", sheet = "Total_biomass")
 setwd("E:\\博士研究生\\Meta分析论文\\B重金属与木本植物meta")
+data_site <- openxlsx::read.xlsx("data-all.xlsx", sheet = "Global_map")
 ###R语言从SoilGrid获取数据
 library(geodata)
 library(raster)
@@ -1361,12 +1359,9 @@ ph <- raster(gph)
 plot(ph)
 
 #points
-data_ph <- openxlsx::read.xlsx("data-all.xlsx", sheet = "Global_map")
-coordinates(data_ph) = c("longitude", "latitude")
-dat_ph <- extract(x = ph, y = data_ph)
-data_point_ph <-data.frame(data_ph, dat_ph)
-write.csv(data_point_ph,"SoilGrid_ph_data.csv")
-
+coordinates(data_site) = c("longitude", "latitude")
+dat_ph <- extract(x = ph, y = data_site)
+data_point_ph <-data.frame(data_site, dat_ph)
 
 #####Soil BD#####
 gbd <- soil_world("bdod",depth=30, path=tempdir())
@@ -1378,13 +1373,11 @@ plot(gbd, ylim = c(-60,90), xlim = c(-180,180),
 # create RasterLayer
 bd <- raster(gbd)
 plot(bd)
-
+str(data_site)
 #points
-data_bd <- openxlsx::read.xlsx("data-all.xlsx", sheet = "Global_map")
-coordinates(data_bd) = c("longitude", "latitude")
-dat_bd <- extract(x = bd, y = data_bd)
-data_point_bd <-data.frame(data_bd, dat_bd)
-write.csv(data_point_bd,"SoilGrid_BD_data.csv")
+dat_bd <- extract(x = bd, y = data_site)
+data_point_bd <-data.frame(data_site, dat_bd)
+
 
 
 
@@ -1400,11 +1393,9 @@ soc <- raster(gsoc)
 plot(soc)
 
 #points
-data_soc <- openxlsx::read.xlsx("data-all.xlsx", sheet = "Global_map")
-coordinates(data_soc) = c("longitude", "latitude")
-dat_soc <- extract(x = soc, y = data_soc)
-data_point_soc <-data.frame(data_soc, dat_soc)
-write.csv(data_point_soc,"SoilGrid_SOC_data.csv")
+dat_soc <- extract(x = soc, y = data_site)
+data_point_soc <-data.frame(data_site, dat_soc)
+
 
 
 
@@ -1420,11 +1411,36 @@ tn <- raster(gtn)
 plot(tn)
 
 #points
-data_tn <- openxlsx::read.xlsx("data-all.xlsx", sheet = "Global_map")
-coordinates(data_tn) = c("longitude", "latitude")
-dat_tn <- extract(x = tn, y = data_tn)
-data_point_tn <-data.frame(data_tn, dat_tn)
-write.csv(data_point_tn,"SoilGrid_TN_data.csv")
+dat_tn <- extract(x = tn, y = data_site)
+data_point_tn <-data.frame(data_site, dat_tn)
+
+#combine data 
+env = cbind(data_point_ph, data_point_bd[,18], data_point_soc[,18], data_point_tn[,18])
+colnames(env)[18:21] = c("soi_pH", "BD", "SOC", "TN")
+
+#WorldClim dataset(2.5 min)
+bio = getData('worldclim', var = 'bio', res = 2.5)
+names(bio)
+#MAT
+plot(bio$bio1/10, main="Mean Annual Temperature")
+#MAP
+plot(bio$bio12, main="Mean Annual Precipitation")
+
+data_site_clim <- openxlsx::read.xlsx("data-all.xlsx", sheet = "Global_map")
+#get bioclim data according sites
+data_clim<-raster::extract(bio, data_site_clim[,5:6]) 
+
+data_clim_env = cbind(env, data_clim)
+
+##Ti data
+data_rel = read.csv("data_rel_lnRR.csv")[, c(2,12:24)]
+
+#menge data
+data_all = merge(data_clim_env, data_rel, by.y = "Co_ID")
+
+data_all_analysis = na.omit(data_all)
+
+write.csv(data_all, "data_all_analysis.csv", fileEncoding = "GB18030")
 ```
 
 
