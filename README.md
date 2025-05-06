@@ -31,8 +31,6 @@ RB, Root biomass
 
 #Time: 2024-03-03
 rm(list = ls())
-setwd("E:\\博士研究生\\Meta分析论文\\B重金属与木本植物meta")
-setwd("F:\\博士研究生\\Meta分析论文\\B重金属与木本植物meta")
 {
   library(orchaRd)
   library(readxl)
